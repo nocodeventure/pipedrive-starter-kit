@@ -8,6 +8,10 @@ This example app covers following Pipedrive app capabilities:
 * Embedded actions
 * Pipedrive API client
 
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started.
+
 ⚠️ **Disclaimer**
 
 **This repository contains non-production code.**\
