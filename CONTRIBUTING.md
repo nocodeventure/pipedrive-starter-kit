@@ -28,12 +28,12 @@ This project and everyone participating in it is expected to:
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/example-apps.git
-   cd example-apps
+   git clone https://github.com/YOUR_USERNAME/pipedrive-starter-kit.git
+   cd pipedrive-starter-kit
    ```
 3. **Add the upstream repository**:
    ```bash
-   git remote add upstream https://github.com/pipedrive/example-apps.git
+   git remote add upstream https://github.com/nocodeventure/pipedrive-starter-kit.git
    ```
 4. **Create a new branch** for your changes:
    ```bash
@@ -45,7 +45,7 @@ This project and everyone participating in it is expected to:
 ### Reporting Bugs
 
 Before creating a bug report:
-- Check if the bug has already been reported in the [Issues](https://github.com/pipedrive/example-apps/issues)
+- Check if the bug has already been reported in the [Issues](https://github.com/nocodeventure/pipedrive-starter-kit/issues)
 - Make sure you're using the latest version of the app
 
 When creating a bug report, include:
@@ -273,8 +273,8 @@ Before submitting a PR, test the following:
 
 ## Need Help?
 
-- **Questions?** Open a [GitHub Discussion](https://github.com/pipedrive/example-apps/discussions) or create an issue
-- **Found a bug?** Create an [issue](https://github.com/pipedrive/example-apps/issues)
+- **Questions?** Open a [GitHub Discussion](https://github.com/nocodeventure/pipedrive-starter-kit/discussions) or create an issue
+- **Found a bug?** Create an [issue](https://github.com/nocodeventure/pipedrive-starter-kit/issues)
 - **Want to chat?** Check the project's communication channels
 
 ---

@@ -18,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pipedrive/example-apps.git"
+    "url": "git+https://github.com/nocodeventure/pipedrive-starter-kit.git"
   },
   "keywords": [],
   "author": "",
   "bugs": {
-    "url": "https://github.com/pipedrive/example-apps/issues"
+    "url": "https://github.com/nocodeventure/pipedrive-starter-kit/issues"
   },
   "homepage": "./",
   "dependencies": {
