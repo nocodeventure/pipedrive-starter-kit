@@ -1,0 +1,73 @@
+.settings-page {
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.settings-page__content {
+    padding: 24px 32px;
+    max-width: 800px;
+}
+
+.settings-page__loading,
+.settings-page__error,
+.settings-page__placeholder {
+    padding: 40px 32px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.settings-page__error {
+    color: #dc2626;
+}
+
+/* Section styles */
+.settings-section {
+    margin-bottom: 32px;
+}
+
+.settings-section__title {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #e07800;
+}
+
+.settings-section__desc {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+/* Fields layout */
+.settings-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.settings-fields__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+/* Scopes section */
+.settings-scope {
+    margin-bottom: 16px;
+}
+
+.settings-scope__title {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.settings-scope__text {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+}

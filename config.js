@@ -4,4 +4,5 @@ module.exports = {
     redirectUri: 'https://d23b2974a153.ngrok-free.app/callback', // Your Pipedrive App OAuth 2 Redirection endpoint or Callback Uri
     surfaceJwt: 'surfaceJWTSecret', // The JWT you have to set in Pipedrive Marketplace Manager to check security of Surface request
     embeddedActionJwt: 'embeddedActionJWTSecret', // The JWT you have to set in Pipedrive Marketplace Manager to check security of Embedded action request
+    settingsJwt: 'settingsJWTSecret', // The JWT you have to set in Pipedrive Marketplace Manager to check security of Settings widget request
 }

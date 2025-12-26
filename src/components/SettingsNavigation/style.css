@@ -1,0 +1,43 @@
+.settings-navigation {
+    border-bottom: 1px solid #e8e8e8;
+    background-color: #fafafa;
+}
+
+.settings-navigation__tabs {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.settings-navigation__tab {
+    padding: 12px 20px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    border-bottom: 2px solid transparent;
+}
+
+.settings-navigation__tab:hover {
+    color: #374151;
+    background-color: #f3f4f6;
+}
+
+.settings-navigation__tab--active {
+    color: #1f2937;
+    background-color: #fff;
+    border-bottom: 2px solid #1f2937;
+}
+
+.settings-navigation__tab--active:hover {
+    background-color: #fff;
+}
+
