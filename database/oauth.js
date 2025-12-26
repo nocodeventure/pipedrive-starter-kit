@@ -3,7 +3,7 @@ const { sql } = require('drizzle-orm');
 const db = require('./db');
 const { withUserContext } = require('./db');
 const { organizations, users, userOrganizations, oauthTokens } = require('./schema');
-const { getUserInfo } = require('../utils/pipedrive-api');
+const { getUserInfo, refreshAccessToken } = require('../utils/pipedrive-api');
 
 /**
  * Save OAuth installation by fetching verified user/company data from Pipedrive API
@@ -270,16 +270,98 @@ async function getClientInstallation(userId, companyId) {
 }
 
 /**
- * Update client installation (placeholder for token refresh logic)
+ * Get valid OAuth tokens for a user-company combination, refreshing if expired
+ * This is the main function endpoints should use to get tokens
+ * @param {string} userId - Pipedrive user ID
+ * @param {string} companyId - Pipedrive company ID
+ * @returns {Object} Valid token data with access_token, api_domain, etc.
+ * @throws {Error} If tokens not found or refresh fails
  */
-async function updateClientInstallation() {
-    // TODO: Implement token refresh logic if needed
-    console.log('updateClientInstallation called - implement token refresh if needed');
+async function getValidTokens(userId, companyId) {
+    return await db.transaction(async (tx) => {
+        // Disable RLS to find user and org
+        await tx.execute(sql`SET LOCAL row_security = off`);
+
+        const [user] = await tx
+            .select()
+            .from(users)
+            .where(eq(users.pipedriveUserId, parseInt(userId)));
+
+        const [org] = await tx
+            .select()
+            .from(organizations)
+            .where(eq(organizations.companyId, parseInt(companyId)));
+
+        if (!user || !org) {
+            throw new Error('User or organization not found');
+        }
+
+        // Fetch OAuth tokens
+        const [tokens] = await tx
+            .select()
+            .from(oauthTokens)
+            .where(
+                and(
+                    eq(oauthTokens.userId, user.id),
+                    eq(oauthTokens.organizationId, org.id)
+                )
+            );
+
+        if (!tokens) {
+            throw new Error('OAuth tokens not found');
+        }
+
+        let accessToken = tokens.accessToken;
+
+        // Check if token is expired and refresh if needed
+        if (new Date() > tokens.expiresAt) {
+            console.log('Access token expired, refreshing...');
+            try {
+                const newTokens = await refreshAccessToken(tokens.refreshToken);
+                const newExpiresAt = new Date(Date.now() + newTokens.expires_in * 1000);
+
+                // Update tokens in database
+                await tx
+                    .update(oauthTokens)
+                    .set({
+                        accessToken: newTokens.access_token,
+                        refreshToken: newTokens.refresh_token,
+                        expiresAt: newExpiresAt,
+                        updatedAt: new Date(),
+                    })
+                    .where(
+                        and(
+                            eq(oauthTokens.userId, user.id),
+                            eq(oauthTokens.organizationId, org.id)
+                        )
+                    );
+
+                accessToken = newTokens.access_token;
+                console.log('Token refreshed successfully');
+            } catch (refreshError) {
+                console.error('Token refresh failed:', refreshError);
+                throw new Error('Token refresh failed. Please re-authorize the app.');
+            }
+        }
+
+        // Return valid tokens
+        return {
+            access_token: accessToken,
+            refresh_token: tokens.refreshToken,
+            token_type: tokens.tokenType,
+            scope: tokens.scope,
+            api_domain: org.apiDomain,
+            userId: userId,
+            companyId: companyId,
+            user: user,
+            org: org,
+        };
+    });
 }
 
 module.exports = {
     saveInstallation,
     deleteInstallation,
     getClientInstallation,
-    updateClientInstallation,
+    getValidTokens,
 };

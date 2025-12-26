@@ -2,6 +2,39 @@
  * Utility for making authenticated Pipedrive API calls
  */
 
+const config = require('../config');
+
+/**
+ * Refresh an expired OAuth access token using the refresh token
+ * @param {string} refreshToken - The refresh token
+ * @returns {Promise<Object>} New token data { access_token, refresh_token, expires_in, token_type, scope, api_domain }
+ */
+async function refreshAccessToken(refreshToken) {
+    const tokenUrl = 'https://oauth.pipedrive.com/oauth/token';
+    
+    const params = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+        client_id: config.clientId,
+        client_secret: config.clientSecret,
+    });
+
+    const response = await fetch(tokenUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: params.toString(),
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Token refresh failed: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+}
+
 /**
  * Fetch current user information from Pipedrive API
  * @param {string} apiDomain - The API domain (e.g., "https://nocodeventure.pipedrive.com")
@@ -37,4 +70,5 @@ async function getUserInfo(apiDomain, accessToken) {
 
 module.exports = {
     getUserInfo,
+    refreshAccessToken,
 };
