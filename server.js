@@ -48,6 +48,13 @@ app.use('/embedded-action', jwtCheck(config.embeddedActionJwt));
 app.get('/embedded-action', require('./endpoints/embedded-action'));
 app.post('/embedded-action', require('./endpoints/embedded-action-save'));
 
+// Settings widget
+app.all('/settings', jwtCheck(config.settingsJwt), require('./endpoints/settings-render'));
+
+// Settings API endpoints (protected by settingsJwt)
+app.use('/settings/user/me/:userId/:companyId', jwtCheck(config.settingsJwt));
+app.get('/settings/user/me/:userId/:companyId', require('./endpoints/user/me'));
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
