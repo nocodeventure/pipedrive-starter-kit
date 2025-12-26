@@ -85,12 +85,12 @@ async function saveRecord(userId, companyId, dealId, record) {
 }
 
 /**
- * Soft delete a todo record
+ * Hard delete a todo record
  * @param {string} userId - Pipedrive user ID
  * @param {string} companyId - Pipedrive company ID
  * @param {string} dealId - Pipedrive deal ID
  * @param {string} recordId - Todo record ID
- * @returns {Object} Updated record
+ * @returns {Object} Deleted record
  */
 async function deleteRecord(userId, companyId, dealId, recordId) {
     try {
@@ -107,13 +107,9 @@ async function deleteRecord(userId, companyId, dealId, recordId) {
                 throw new Error(`Organization not found for companyId: ${companyId}`);
             }
 
-            // Soft delete: Set deleted = true
-            const [updatedTodo] = await db
-                .update(todos)
-                .set({
-                    deleted: true,
-                    updatedAt: new Date(),
-                })
+            // Hard delete: Remove from database
+            const [deletedTodo] = await db
+                .delete(todos)
                 .where(
                     and(
                         eq(todos.id, recordId),
@@ -123,7 +119,7 @@ async function deleteRecord(userId, companyId, dealId, recordId) {
                 )
                 .returning();
 
-            return updatedTodo;
+            return deletedTodo;
         });
     } catch (error) {
         console.error('Error deleting record:', error);
@@ -183,10 +179,10 @@ async function getRecord(userId, companyId, dealId, recordId) {
                 )
                 .orderBy(todos.displayOrder);
 
-            // Convert to object with numeric keys for backward compatibility
+            // Convert to object with UUID keys
             const todosObj = {};
-            allTodos.forEach((todo, index) => {
-                todosObj[index + 1] = {
+            allTodos.forEach((todo) => {
+                todosObj[todo.id] = {
                     id: todo.id,
                     title: todo.title,
                     checked: todo.checked,
