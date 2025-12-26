@@ -83,3 +83,7 @@ npm run react:build
 6. Start the server with command `npm run start`.
 7. In the Developer Hub preview your app and press the "Install & test" button and go through OAuth flow.
 8. Go to deal details view and the Custom UI Extensions should load.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
